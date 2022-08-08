@@ -1,0 +1,73 @@
+<html>
+<head>
+    <title>401k Calculator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="banner">
+        <div class="navbar">
+            <img src="logo.png" class="logo">
+            <ul>
+                <li><a href="#">401k Calculator</a></li>
+                <li><a href="#">Roth IRA Calculator</a></li>
+            </ul>
+        </div>
+    </div>
+    
+    <form>
+        <div class="boxes">
+            Current Age <input type="number" name="age" id="age" min="1" max="200" required> <br> <br>
+            Age of Retirement <input type="number" name="retireAge" id="retireAge" min="1" max="200" required> <br> <br>
+            Current Annual Salary $<input type="number" name="salary" id="salary" required> <br> <br>
+            Salary Increase Rate <input type="number" name="salaryIncrease" id="salaryIncrease" required>% <br> <br>
+            Contribution Percent <input type="number" name="contriPercent" id="contriPercent" required>% <br> <br>
+            Current 401k Balance $<input type="number" name="balance" id="balance" required> <br> <br>
+            Annual Return Rate <input type="number" name="returnRate" id="returnRate" required>% <br> <br>
+            Annual Return Rate Increase <input type="number" name="returnRateIncrease" id="returnRateIncrease" required>% <br> <br>
+            Employer Match Percent <input type="number" name="employerMatchPercent" id="employerMatchPercent" required>% <br> <br>
+            Employer Match Ends <input type="number" name="employerMatchEnds" id="employerMatchEnds" required>% <br> <br>
+            <button type="reset">Reset</button>
+            <button type="submit" onclick="myFunction(age, retireAge, salary, salaryIncrease, contriPercent, balance, returnRate, returnRateIncrease, employerMatchPercent, employerMatchEnds)">Submit</button>
+        
+        </div>
+
+        <script>
+            function myFunction(a, b, c, d, e, f, g, h, i, j) {
+                let age = parseInt(a.value);
+                let retireAge = parseInt(b.value); //document.querySelector("#retireAge");
+                let salary = parseInt(c.value); //document.querySelector("#salary");
+                let salaryIncrease = (parseInt(d.value) / 100) + 1; //document.querySelector("#salaryIncrease");
+                let contriPercent = parseInt(e.value) / 100; //document.querySelector("#contriPercent");
+                let balance = parseInt(f.value); //document.querySelector("#balance");
+                let returnRate = parseInt(g.value) / 100; //document.querySelector("#returnRate");
+                let returnRateIncrease = (parseInt(h.value) / 100) + 1; //document.querySelector("#returnRateIncrease");
+                let employerMatchPercent = parseInt(i.value) / 100; //document.querySelector("#employerMatchPercent");
+                let employerMatchEnds = parseInt(j.value) / 100; //document.querySelector("#employerMatchEnds");
+                
+
+                let contriTotal = 0;
+                let employeeTotal = 0;
+                let years = retireAge - age;
+                var myWindow = window.open("", "Window", "width=900, height=900");
+                //myWindow.document.write(balance);
+                for(let i=0; i < years; i++) {
+                    if (i > 0) salary = salary * salaryIncrease;
+                    let num = salary * contriPercent;
+                    contriTotal += num;
+                    let employerContri = num * employerMatchPercent;
+                    if (employerContri > (salary * employerMatchEnds) ) employerContri = salary * employerMatchEnds;
+                    employeeTotal += employerContri;
+                    balance += employerContri;
+                    balance += num
+                    balance += (balance * returnRate);
+                    returnRate *= returnRateIncrease;
+                    myWindow.document.write("Year " + i + " Projections:<br><br>Projected Salary: $" + salary.toFixed(2) + "<br>Projected Contribution Amount: $" + num.toFixed(2) + "<br>Projected Employer Contribution: $" + employerContri.toFixed(2) + "<br>Projected 401k Balance: $" + balance.toFixed(2) + "<br><br><br>");
+                }
+                //myWindow.document.write(age);
+                //balance += contriTotal;
+                myWindow.document.write("-----------------------------<br><br>Total Employee Contributions: $" + contriTotal.toFixed(2) + "<br>Total Employer Contributions: $" + employeeTotal.toFixed(2) + "<br>Total 401k Balance: $" + balance.toFixed(2));
+            }
+        </script>
+    </form>
+</body>
+<html>
